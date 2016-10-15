@@ -17,6 +17,10 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+    packagingOptions{
+        exclude 'META-INF/LICENSE'
+        exclude 'META-INF/DEPENDENCIES'
+    }
 }
 
 dependencies {
@@ -25,5 +29,12 @@ dependencies {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
     compile 'com.android.support:appcompat-v7:24.2.1'
-    testCompile 'junit:junit:4.12'
+    testCompile 'junit:junit:4.10'
+    compile 'com.github.Ritaja:java-exchange-rates:1.0'
+}
+
+configurations {
+    compile.exclude group: "org.json", module: "json"
+    compile.exclude group: "org.apache.httpcomponents", module: "httpclient"
+    compile.exclude group: "org.hamcrest", module: "hamcrest-core"
 }
