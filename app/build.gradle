@@ -16,11 +16,16 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
+        debug {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
     }
     packagingOptions{
         exclude 'META-INF/LICENSE'
         exclude 'META-INF/DEPENDENCIES'
     }
+
 }
 
 dependencies {
@@ -31,6 +36,8 @@ dependencies {
     compile 'com.android.support:appcompat-v7:24.2.1'
     testCompile 'junit:junit:4.10'
     compile 'com.github.Ritaja:java-exchange-rates:1.0'
+    compile 'com.github.navasmdc:MaterialDesign:1.5@aar'
+    compile group: 'com.nineoldandroids', name: 'library', version: '2.4.0'
 }
 
 configurations {
