@@ -1,29 +1,76 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:materialdesign="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/activity_main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="com.lukechenshui.shoppingcart.MainActivity">
+    android:fillViewport="true">
 
-    <Spinner
-        android:id="@+id/mainCurrencySelectionSpinner"
+    <LinearLayout
+        android:id="@+id/activity_main"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:paddingBottom="@dimen/activity_vertical_margin"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingRight="@dimen/activity_horizontal_margin"
+        android:paddingTop="@dimen/activity_vertical_margin"
+        tools:context="com.lukechenshui.shoppingcart.MainActivity">
 
-    <com.gc.materialdesign.views.ButtonFloat
-        android:id="@+id/buttonFloat"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
-        android:layout_marginRight="24dp"
-        android:background="#1E88E5"
-        materialdesign:animate="true"
-        materialdesign:iconDrawable="@drawable/ic_action_new" />
-</RelativeLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/textView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Select Currency:"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body2" />
+
+            <Spinner
+                android:id="@+id/mainCurrencySelectionSpinner"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBottom="@+id/textView"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentTop="false"
+                android:layout_alignTop="@+id/textView"
+                android:layout_toRightOf="@+id/textView" />
+        </LinearLayout>
+
+        <ToggleButton
+            android:id="@+id/toggleAddItem"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:autoText="false"
+            android:checked="false"
+            android:textOff="Add Item to Cart"
+            android:textOn="Cancel" />
+
+
+        <com.github.aakira.expandablelayout.ExpandableRelativeLayout
+            android:id="@+id/expandableLayout"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="3">
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:src="@drawable/ic_action_new" />
+        </com.github.aakira.expandablelayout.ExpandableRelativeLayout>
+
+        <com.gc.materialdesign.views.ButtonFloat
+            android:id="@+id/buttonFloat"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="24dp"
+            android:background="#1E88E5"
+            materialdesign:animate="true"
+            materialdesign:iconDrawable="@drawable/ic_action_new" />
+    </LinearLayout>
+
+</ScrollView>

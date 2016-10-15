@@ -38,6 +38,7 @@ dependencies {
     compile 'com.github.Ritaja:java-exchange-rates:1.0'
     compile 'com.github.navasmdc:MaterialDesign:1.5@aar'
     compile group: 'com.nineoldandroids', name: 'library', version: '2.4.0'
+    compile 'com.github.aakira:expandable-layout:1.6.0@aar'
 }
 
 configurations {

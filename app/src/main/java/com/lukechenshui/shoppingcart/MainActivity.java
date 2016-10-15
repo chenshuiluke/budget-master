@@ -32,14 +32,20 @@ public class MainActivity extends AppCompatActivity {
         currencySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
-                TextView item = (TextView) selectedItemView;
-                String currencyName = item.getText().toString();
-                SharedPreferences settings = getSharedPreferences(getString(R.string.shared_preferences_name), 0);
-                SharedPreferences.Editor editor = settings.edit();
-                editor.putInt("selectedCurrencyPos", position);
-                editor.putString("selectedCurrencyName", currencyName);
-                Log.i("Currency", "Changed currency to " + currencyName);
-                editor.commit();
+                if (currencySpinner != null) {
+                    TextView item = (TextView) selectedItemView;
+                    if (item != null) {
+                        String currencyName = item.getText().toString();
+                        SharedPreferences settings = getSharedPreferences(getString(R.string.shared_preferences_name), 0);
+                        SharedPreferences.Editor editor = settings.edit();
+                        editor.putInt("selectedCurrencyPos", position);
+                        editor.putString("selectedCurrencyName", currencyName);
+                        Log.i("Currency", "Changed currency to " + currencyName);
+                        editor.commit();
+                    }
+
+                }
+
             }
 
             @Override
