@@ -3,6 +3,8 @@ package com.lukechenshui.shoppingcart;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -15,6 +17,7 @@ import android.widget.Toast;
 import android.widget.ToggleButton;
 
 import com.github.aakira.expandablelayout.ExpandableRelativeLayout;
+import com.lukechenshui.shoppingcart.adapters.ItemRecyclerViewAdapter;
 import com.lukechenshui.shoppingcart.shopping.Item;
 import com.lukechenshui.shoppingcart.utilities.CurrencyUtility;
 import com.ritaja.xchangerate.util.Currency;
@@ -30,6 +33,8 @@ public class MainActivity extends AppCompatActivity {
     private EditText newItemName;
     private EditText newItemPrice;
     private String currencyName;
+    private RecyclerView itemRecyclerView;
+    private LinearLayoutManager layoutManager;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,13 +45,23 @@ public class MainActivity extends AppCompatActivity {
         toggleButton = (ToggleButton) findViewById(R.id.toggleAddItem);
         newItemName = (EditText) findViewById(R.id.itemName);
         newItemPrice = (EditText) findViewById(R.id.itemPrice);
+        itemRecyclerView = (RecyclerView) findViewById(R.id.itemRecyclerView);
+        layoutManager = new LinearLayoutManager(this);
+        itemRecyclerView.setLayoutManager(layoutManager);
         setSpinnerSelectionItems(getSelectedCurrency());
         setSpinnerOnItemSelected();
         setToggleButtonOnToggle();
         expandableLayout.setClosePosition(0);
         expandableLayout.collapse();
 
-        Log.d("ShoppingCart", "Existing items:" + CurrencyUtility.getExistingItems().toString());
+        populateItemRecyclerView();
+    }
+
+    private void populateItemRecyclerView() {
+        ArrayList<Item> items = CurrencyUtility.getExistingItems();
+        Log.d("ShoppingCart", "Existing items:" + items.toString());
+        ItemRecyclerViewAdapter adapter = new ItemRecyclerViewAdapter(items);
+        itemRecyclerView.setAdapter(adapter);
     }
 
     private void makeToast(String message) {
@@ -66,6 +81,8 @@ public class MainActivity extends AppCompatActivity {
             Item item = new Item(currency, price, name);
             item.save();
             clearNewItemInformation();
+            expandableLayout.collapse();
+            populateItemRecyclerView();
         }
 
     }
@@ -74,6 +91,7 @@ public class MainActivity extends AppCompatActivity {
         newItemName.setText("");
         newItemPrice.setText("");
         expandableLayout.collapse();
+        toggleButton.setChecked(false);
     }
 
     private void setToggleButtonOnToggle() {
