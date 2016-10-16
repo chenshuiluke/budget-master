@@ -16,3 +16,5 @@
 #   public *;
 #}
 -keepattributes EnclosingMethod
+-dontoptimize
+-keepattributes InnerClasses

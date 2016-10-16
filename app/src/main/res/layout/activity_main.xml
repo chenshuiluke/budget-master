@@ -50,14 +50,32 @@
             android:id="@+id/expandableLayout"
             ael_expanded="false"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
+            android:layout_height="wrap_content"
             android:layout_below="@+id/toggleAddItem">
 
-            <TextView
-                android:id="@+id/textView2"
+            <EditText
+                android:id="@+id/itemName"
+                android:layout_width="200dp"
+                android:layout_height="wrap_content"
+                android:hint="Item name"
+                tools:focusable="true" />
+
+            <EditText
+                android:id="@+id/itemPrice"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="TextView" />
+                android:layout_toRightOf="@id/itemName"
+                android:hint="Item price"
+                android:inputType="numberDecimal" />
+
+            <Button
+                android:id="@+id/button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/itemName"
+                android:onClick="saveItem"
+                android:text="Add" />
+
         </com.github.aakira.expandablelayout.ExpandableRelativeLayout>
 
         <android.support.v7.widget.RecyclerView

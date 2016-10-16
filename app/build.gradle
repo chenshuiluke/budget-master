@@ -3,22 +3,55 @@ apply plugin: 'com.android.application'
 android {
     compileSdkVersion 24
     buildToolsVersion "24.0.3"
+
+    def versionPropsFile = file('version.properties')
+    def versionBuild
+
+    /*Setting default value for versionBuild which is the last incremented value stored in the file */
+    if (versionPropsFile.canRead()) {
+        def Properties versionProps = new Properties()
+        versionProps.load(new FileInputStream(versionPropsFile))
+        versionBuild = versionProps['VERSION_BUILD'].toInteger()
+    } else {
+        throw new GradleException("Could not read version.properties!")
+    }
+
+    /*Wrapping inside a method avoids auto incrementing on every gradle task run. Now it runs only when we build apk*/
+    ext.autoIncrementBuildNumber = {
+
+        if (versionPropsFile.canRead()) {
+            def Properties versionProps = new Properties()
+            versionProps.load(new FileInputStream(versionPropsFile))
+            versionBuild = versionProps['VERSION_BUILD'].toInteger() + 1
+            versionProps['VERSION_BUILD'] = versionBuild.toString()
+            versionProps.store(versionPropsFile.newWriter(), null)
+        } else {
+            throw new GradleException("Could not read version.properties!")
+        }
+    }
+
+    task increaseVersion() << {
+        autoIncrementBuildNumber()
+
+    }
+    tasks.whenTaskAdded { task ->
+        if (task.name == 'assembleRelease') {
+            task.finalizedBy 'increaseVersion'
+        }
+    }
+
     defaultConfig {
         applicationId "com.lukechenshui.shoppingcart"
         minSdkVersion 15
         targetSdkVersion 24
-        versionCode 1
-        versionName "1.0"
+        versionCode versionBuild
+        versionName "1.0." + versionBuild
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
         release {
-            minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
         debug {
-            minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
     packagingOptions{
@@ -40,10 +73,14 @@ dependencies {
     compile group: 'com.nineoldandroids', name: 'library', version: '2.4.0'
     compile 'com.github.aakira:expandable-layout:1.6.0@aar'
     compile 'com.android.support:recyclerview-v7:24.2.1'
+    compile 'com.google.guava:guava:19.0'
+    compile 'com.michaelpardo:activeandroid:3.1.0-SNAPSHOT'
+    compile group: 'org.apache.httpcomponents', name: 'httpclient-android', version: '4.3.5.1'
 }
 
 configurations {
     compile.exclude group: "org.json", module: "json"
+    compile.exclude group: "org.apache.httpcomponents", module: "httpcore"
     compile.exclude group: "org.apache.httpcomponents", module: "httpclient"
     compile.exclude group: "org.hamcrest", module: "hamcrest-core"
 }

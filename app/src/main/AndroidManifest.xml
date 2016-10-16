@@ -3,8 +3,9 @@
     package="com.lukechenshui.shoppingcart">
 
     <application
+        android:name="com.activeandroid.app.Application"
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@drawable/small_shopping_cart_logo"
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
