@@ -7,9 +7,12 @@ import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.CompoundButton;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.ToggleButton;
 
+import com.github.aakira.expandablelayout.ExpandableRelativeLayout;
 import com.lukechenshui.shoppingcart.utilities.CurrencyUtility;
 
 import java.util.ArrayList;
@@ -17,15 +20,36 @@ import java.util.ArrayList;
 public class MainActivity extends AppCompatActivity {
 
     private Spinner currencySpinner;
-
+    private ExpandableRelativeLayout expandableLayout;
+    private ToggleButton toggleButton;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Log.i("Currency", "Available currencies: " + CurrencyUtility.getCurrencies().toString());
         currencySpinner = (Spinner) findViewById(R.id.mainCurrencySelectionSpinner);
+        expandableLayout = (ExpandableRelativeLayout) findViewById(R.id.expandableLayout);
+        toggleButton = (ToggleButton) findViewById(R.id.toggleAddItem);
         setSpinnerSelectionItems(getSelectedCurrency());
         setSpinnerOnItemSelected();
+        setToggleButtonOnToggle();
+        expandableLayout.setClosePosition(0);
+        expandableLayout.collapse();
+
+    }
+
+    private void setToggleButtonOnToggle() {
+        toggleButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    expandableLayout.expand();
+                    Log.i("ExpandableLayout", "Expanding layout");
+                } else {
+                    expandableLayout.collapse();
+                    Log.i("ExpandableLayout", "Collapsing layout");
+                }
+            }
+        });
     }
 
     private void setSpinnerOnItemSelected() {
@@ -68,7 +92,7 @@ public class MainActivity extends AppCompatActivity {
 
         ArrayList<String> currencies = CurrencyUtility.getCurrencies();
         Log.d("Currency", "Position of USD currency in list:" + pos);
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, R.layout.support_simple_spinner_dropdown_item,
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, R.layout.support_simple_spinner_dropdown_item,
                 currencies);
         adapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
         currencySpinner.setAdapter(adapter);

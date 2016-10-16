@@ -1,4 +1,7 @@
 <resources>
     <string name="app_name">Shopping Cart</string>
     <string name="shared_preferences_name">preferences</string>
+    <string name="select_currency_text">Select Currency:</string>
+    <string name="add_item_to_cart_text">Add Item to Cart</string>
+    <string name="cancel_text">Cancel</string>
 </resources>
