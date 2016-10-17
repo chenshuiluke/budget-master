@@ -1,4 +1,4 @@
-package com.lukechenshui.shoppingcart.adapters;
+package com.lukechenshui.budgetmaster.adapters;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -6,8 +6,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.lukechenshui.shoppingcart.R;
-import com.lukechenshui.shoppingcart.shopping.Item;
+import com.lukechenshui.budgetmaster.R;
+import com.lukechenshui.budgetmaster.shopping.Item;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,4 +1,4 @@
-package com.lukechenshui.shoppingcart;
+package com.lukechenshui.budgetmaster;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;
@@ -21,6 +21,6 @@ public class ExampleInstrumentedTest {
         // Context of the app under test.
         Context appContext = InstrumentationRegistry.getTargetContext();
 
-        assertEquals("com.lukechenshui.shoppingcart", appContext.getPackageName());
+        assertEquals("com.lukechenshui.budgetmaster", appContext.getPackageName());
     }
 }

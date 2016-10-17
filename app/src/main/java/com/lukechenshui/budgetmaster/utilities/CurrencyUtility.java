@@ -1,10 +1,10 @@
-package com.lukechenshui.shoppingcart.utilities;
+package com.lukechenshui.budgetmaster.utilities;
 
 import android.util.Log;
 
 import com.activeandroid.query.Select;
 import com.google.common.collect.HashBiMap;
-import com.lukechenshui.shoppingcart.shopping.Item;
+import com.lukechenshui.budgetmaster.shopping.Item;
 import com.ritaja.xchangerate.api.CurrencyConverter;
 import com.ritaja.xchangerate.api.CurrencyConverterBuilder;
 import com.ritaja.xchangerate.util.Currency;

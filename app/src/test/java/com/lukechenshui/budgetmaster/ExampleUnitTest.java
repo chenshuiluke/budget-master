@@ -1,4 +1,4 @@
-package com.lukechenshui.shoppingcart;
+package com.lukechenshui.budgetmaster;
 
 import org.junit.Test;
 

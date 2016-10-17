@@ -1,4 +1,4 @@
-package com.lukechenshui.shoppingcart;
+package com.lukechenshui.budgetmaster;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -17,9 +17,9 @@ import android.widget.Toast;
 import android.widget.ToggleButton;
 
 import com.github.aakira.expandablelayout.ExpandableRelativeLayout;
-import com.lukechenshui.shoppingcart.adapters.ItemRecyclerViewAdapter;
-import com.lukechenshui.shoppingcart.shopping.Item;
-import com.lukechenshui.shoppingcart.utilities.CurrencyUtility;
+import com.lukechenshui.budgetmaster.adapters.ItemRecyclerViewAdapter;
+import com.lukechenshui.budgetmaster.shopping.Item;
+import com.lukechenshui.budgetmaster.utilities.CurrencyUtility;
 import com.ritaja.xchangerate.util.Currency;
 
 import java.math.BigDecimal;
@@ -83,6 +83,7 @@ public class MainActivity extends AppCompatActivity {
             clearNewItemInformation();
             expandableLayout.collapse();
             populateItemRecyclerView();
+            toggleButton.setChecked(false);
         }
 
     }

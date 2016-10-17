@@ -1,4 +1,4 @@
-package com.lukechenshui.shoppingcart.shopping;
+package com.lukechenshui.budgetmaster.shopping;
 
 import com.activeandroid.Model;
 import com.activeandroid.annotation.Column;
