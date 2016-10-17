@@ -131,6 +131,27 @@ public class MainActivity extends AppCompatActivity {
                         editor.putString("selectedCurrencyName", currencyName);
                         Log.i("Currency", "Changed currency to " + currencyName);
                         editor.commit();
+
+                        Thread thread = new Thread(new Runnable() {
+                            @Override
+                            public void run() {
+                                final String finalCurrencyName = currencyName;
+                                ArrayList<Item> items = CurrencyUtility.getExistingItems();
+                                for (Item tempItem : items) {
+                                    CurrencyUtility.convertItemCurrency(tempItem, finalCurrencyName);
+                                    tempItem.save();
+                                }
+                                runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        populateItemRecyclerView();
+                                    }
+                                });
+
+                            }
+                        });
+                        thread.start();
+
                     }
 
                 }

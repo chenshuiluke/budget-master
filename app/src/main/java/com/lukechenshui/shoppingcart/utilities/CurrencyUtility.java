@@ -1,10 +1,16 @@
 package com.lukechenshui.shoppingcart.utilities;
 
+import android.util.Log;
+
 import com.activeandroid.query.Select;
 import com.google.common.collect.HashBiMap;
 import com.lukechenshui.shoppingcart.shopping.Item;
+import com.ritaja.xchangerate.api.CurrencyConverter;
+import com.ritaja.xchangerate.api.CurrencyConverterBuilder;
 import com.ritaja.xchangerate.util.Currency;
+import com.ritaja.xchangerate.util.Strategy;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,13 +19,34 @@ import java.util.List;
  */
 
 public abstract class CurrencyUtility {
-
+    private static CurrencyConverter converter = new CurrencyConverterBuilder()
+            .strategy(Strategy.CURRENCY_LAYER_FILESTORE)
+            .accessKey("98bb09677965b8e86b9a4ba5e34f9fb9")
+            .buildConverter();
     public static ArrayList<String> getCurrencies(){
-        ArrayList<String>list = new ArrayList<>();
-        Currency[] arr = Currency.values();
-        for(Currency currency : arr){
-            list.add(currency.name());
+        final ArrayList<String> list = new ArrayList<>();
+        Thread thread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+
+                Currency[] arr = Currency.values();
+                for (Currency currency : arr) {
+                    try {
+                        converter.convertCurrency(new BigDecimal("100"), Currency.USD, currency);
+                        converter.convertCurrency(new BigDecimal("100"), currency, Currency.USD);
+                        list.add(currency.name());
+                    } catch (Exception exc) {
+                    }
+                }
+            }
+        });
+        thread.start();
+        try {
+            thread.join();
+        } catch (Exception exc) {
+
         }
+
         return list;
     }
 
@@ -28,6 +55,7 @@ public abstract class CurrencyUtility {
         Currency[] arr = Currency.values();
         for (Currency currency : arr) {
             map.put(currency.name(), currency);
+            Log.i("Currency", "Adding " + currency + " to map with key: " + currency.name());
         }
         return map;
     }
@@ -39,4 +67,20 @@ public abstract class CurrencyUtility {
         return itemList;
     }
 
+    public static void convertItemCurrency(Item item, Currency currency) {
+        try {
+            Log.d("CurrencyConversion", " old currency: " + item.getCurrency() + " new currency: " + currency);
+            BigDecimal newPrice = converter.convertCurrency(item.getPrice(), item.getCurrency(), currency);
+            Log.d("CurrencyConversion", "old price:" + item.getPrice() + " new price: " + newPrice);
+            item.setPrice(newPrice);
+            item.setCurrency(currency);
+        } catch (Exception exc) {
+            Log.d("CurrencyConversion", exc.toString(), exc);
+        }
+    }
+
+    public static void convertItemCurrency(Item item, String currencyName) {
+        Currency currency = getCurrencyMap().get(currencyName);
+        convertItemCurrency(item, currency);
+    }
 }
