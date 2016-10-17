@@ -1,9 +1,12 @@
 package com.lukechenshui.budgetmaster.adapters;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.lukechenshui.budgetmaster.R;
@@ -50,12 +53,13 @@ public class ItemRecyclerViewAdapter extends RecyclerView.Adapter<ItemRecyclerVi
         private TextView itemName;
         private TextView itemPrice;
         private TextView itemCurrency;
-
+        private ImageView itemPicture;
         public ItemHolder(View view) {
             super(view);
             itemName = (TextView) view.findViewById(R.id.itemName);
             itemPrice = (TextView) view.findViewById(R.id.itemPrice);
             itemCurrency = (TextView) view.findViewById(R.id.itemCurrency);
+            itemPicture = (ImageView) view.findViewById(R.id.itemImage);
         }
 
         @Override
@@ -67,6 +71,11 @@ public class ItemRecyclerViewAdapter extends RecyclerView.Adapter<ItemRecyclerVi
             itemName.setText(item.getName());
             itemPrice.setText(item.getPrice().toString());
             itemCurrency.setText(item.getCurrency().name());
+            if(item.getPicture() != null){
+                Bitmap bitmap = BitmapFactory.decodeByteArray(item.getPicture(), 0, item.getPicture().length);
+                itemPicture.setImageBitmap(bitmap);
+            }
+
         }
     }
 }

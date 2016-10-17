@@ -18,16 +18,19 @@ public class Item extends Model {
     private BigDecimal price;
     @Column(name = "Name")
     private String name;
+    @Column(name = "Picture")
+    private byte[] picture;
 
     public Item() {
         super();
     }
 
-    public Item(Currency currency, BigDecimal price, String name) {
+    public Item(Currency currency, BigDecimal price, String name, byte[] picture) {
         super();
         this.currency = currency;
         this.price = price;
         this.name = name;
+        this.picture = picture;
     }
 
     public Currency getCurrency() {
@@ -52,6 +55,14 @@ public class Item extends Model {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public byte[] getPicture() {
+        return picture;
+    }
+
+    public void setPicture(byte[] picture) {
+        this.picture = picture;
     }
 
     @Override

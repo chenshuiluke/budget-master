@@ -1,7 +1,10 @@
 package com.lukechenshui.budgetmaster;
 
+import android.Manifest;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -11,19 +14,25 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
 
 import com.github.aakira.expandablelayout.ExpandableRelativeLayout;
+import com.gun0912.tedpermission.PermissionListener;
+import com.gun0912.tedpermission.TedPermission;
 import com.lukechenshui.budgetmaster.adapters.ItemRecyclerViewAdapter;
 import com.lukechenshui.budgetmaster.shopping.Item;
 import com.lukechenshui.budgetmaster.utilities.CurrencyUtility;
+import com.lukechenshui.budgetmaster.utilities.ImageUtility;
 import com.ritaja.xchangerate.util.Currency;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+
+import gun0912.tedbottompicker.TedBottomPicker;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -35,6 +44,8 @@ public class MainActivity extends AppCompatActivity {
     private String currencyName;
     private RecyclerView itemRecyclerView;
     private LinearLayoutManager layoutManager;
+    private ImageButton newItemImageButton;
+    private Uri pictureUri;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,6 +56,7 @@ public class MainActivity extends AppCompatActivity {
         toggleButton = (ToggleButton) findViewById(R.id.toggleAddItem);
         newItemName = (EditText) findViewById(R.id.itemName);
         newItemPrice = (EditText) findViewById(R.id.itemPrice);
+        newItemImageButton = (ImageButton) findViewById(R.id.itemImageButton);
         itemRecyclerView = (RecyclerView) findViewById(R.id.itemRecyclerView);
         layoutManager = new LinearLayoutManager(this);
         itemRecyclerView.setLayoutManager(layoutManager);
@@ -71,6 +83,7 @@ public class MainActivity extends AppCompatActivity {
     public void saveItem(View view) {
         String name = newItemName.getText().toString();
         String strPrice = newItemPrice.getText().toString();
+        byte[] picture = ImageUtility.getBytes(this, pictureUri);
         if (name.length() == 0) {
             makeToast("Please enter the item's name");
         } else if (strPrice.length() == 0) {
@@ -78,7 +91,7 @@ public class MainActivity extends AppCompatActivity {
         } else {
             BigDecimal price = new BigDecimal(strPrice);
             Currency currency = CurrencyUtility.getCurrencyMap().get(currencyName);
-            Item item = new Item(currency, price, name);
+            Item item = new Item(currency, price, name, picture);
             item.save();
             clearNewItemInformation();
             expandableLayout.collapse();
@@ -93,6 +106,7 @@ public class MainActivity extends AppCompatActivity {
         newItemPrice.setText("");
         expandableLayout.collapse();
         toggleButton.setChecked(false);
+        pictureUri = null;
     }
 
     private void setToggleButtonOnToggle() {
@@ -185,5 +199,40 @@ public class MainActivity extends AppCompatActivity {
         adapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
         currencySpinner.setAdapter(adapter);
         currencySpinner.setSelection(pos);
+    }
+
+    public void selectImages(View view){
+
+        PermissionListener permissionlistener = new PermissionListener() {
+            @Override
+            public void onPermissionGranted() {
+                Toast.makeText(getApplicationContext(), "Permission Granted", Toast.LENGTH_SHORT).show();
+                TedBottomPicker tedBottomPicker = new TedBottomPicker.Builder(getApplicationContext())
+                        .setOnImageSelectedListener(new TedBottomPicker.OnImageSelectedListener() {
+                            @Override
+                            public void onImageSelected(Uri uri) {
+                                newItemImageButton.setImageURI(uri);
+                                pictureUri = uri;
+                            }
+                        })
+                        .create();
+
+                tedBottomPicker.show(getSupportFragmentManager());
+            }
+
+            @Override
+            public void onPermissionDenied(ArrayList<String> deniedPermissions) {
+                Toast.makeText(MainActivity.this, "Permission Denied\n" + deniedPermissions.toString(), Toast.LENGTH_SHORT).show();
+            }
+
+
+        };
+
+        new TedPermission(this)
+                .setPermissionListener(permissionlistener)
+                .setDeniedMessage("If you reject these permissions, you can't set item photos.")
+                .setPermissions(Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.CAMERA)
+                .check();
+
     }
 }
