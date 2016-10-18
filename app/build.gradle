@@ -46,12 +46,13 @@ android {
 
     defaultConfig {
         applicationId "com.lukechenshui.budgetmaster"
-        minSdkVersion 16
-        targetSdkVersion 16
+        minSdkVersion 15
+        targetSdkVersion 24
         versionCode versionBuild
         versionName "1.0." + versionBuild
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         multiDexEnabled true
+
     }
     buildTypes {
         release {

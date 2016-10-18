@@ -106,7 +106,9 @@ public class MainActivity extends AppCompatActivity {
         newItemPrice.setText("");
         expandableLayout.collapse();
         toggleButton.setChecked(false);
-        pictureUri = null;
+        Uri uri = Uri.parse("android.resource://" + getApplicationContext().getPackageName() + "/drawable/ic_camera_enhance_black_24dp");
+        newItemImageButton.setImageURI(uri);
+        pictureUri = pictureUri;
     }
 
     private void setToggleButtonOnToggle() {
