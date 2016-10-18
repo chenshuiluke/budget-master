@@ -4,7 +4,6 @@ import android.Manifest;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -92,6 +91,7 @@ public class MainActivity extends AppCompatActivity {
             BigDecimal price = new BigDecimal(strPrice);
             Currency currency = CurrencyUtility.getCurrencyMap().get(currencyName);
             Item item = new Item(currency, price, name, picture);
+            Log.d("Item", "Item to save:" + item.toString());
             item.save();
             clearNewItemInformation();
             expandableLayout.collapse();

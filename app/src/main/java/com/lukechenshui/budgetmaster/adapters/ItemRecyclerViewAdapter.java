@@ -3,6 +3,7 @@ package com.lukechenshui.budgetmaster.adapters;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -68,9 +69,11 @@ public class ItemRecyclerViewAdapter extends RecyclerView.Adapter<ItemRecyclerVi
         }
 
         public void bindItem(Item item) {
+            Log.i("BudgetMaster", item.toString());
             itemName.setText(item.getName());
             itemPrice.setText(item.getPrice().toString());
             itemCurrency.setText(item.getCurrency().name());
+            Log.d("Image", "item image: " + item.getPicture());
             if(item.getPicture() != null){
                 Bitmap bitmap = BitmapFactory.decodeByteArray(item.getPicture(), 0, item.getPicture().length);
                 itemPicture.setImageBitmap(bitmap);

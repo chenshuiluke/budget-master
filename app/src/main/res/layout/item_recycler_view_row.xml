@@ -4,20 +4,16 @@
     android:layout_height="50dp"
     android:layout_marginBottom="10dp">
 
-    <GridLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:columnCount="4"
-        android:orientation="horizontal"
-        android:rowCount="1">
+        android:orientation="horizontal">
 
         <TextView
             android:id="@+id/itemName"
-            android:layout_width="100dp"
-            android:layout_height="wrap_content"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
             android:layout_column="0"
-            android:layout_columnWeight="1"
-            android:layout_gravity="center_vertical"
             android:layout_row="0"
             android:layout_weight="1"
             android:gravity="center"
@@ -25,33 +21,25 @@
 
         <TextView
             android:id="@+id/itemPrice"
-            android:layout_width="100dp"
-            android:layout_height="wrap_content"
-            android:layout_column="1"
-            android:layout_columnWeight="1"
-            android:layout_gravity="center_vertical"
-            android:layout_row="0"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
             android:layout_weight="1"
             android:gravity="center"
             android:text="TextView" />
 
         <TextView
             android:id="@+id/itemCurrency"
-            android:layout_width="100dp"
-            android:layout_height="wrap_content"
-            android:layout_column="2"
-            android:layout_columnWeight="1"
-            android:layout_gravity="center_vertical"
-            android:layout_row="0"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
             android:layout_weight="1"
             android:gravity="center"
             android:text="TextView" />
 
         <ImageView
-            android:layout_width="100dp"
-            android:layout_row="0"
-            android:layout_column="3"
-            android:id="@+id/itemImage"/>
-    </GridLayout>
+            android:id="@+id/itemImage"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_weight="1" />
+    </LinearLayout>
 
 </android.support.v7.widget.CardView>
