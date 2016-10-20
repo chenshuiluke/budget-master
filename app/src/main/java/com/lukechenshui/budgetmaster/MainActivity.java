@@ -30,6 +30,7 @@ import com.lukechenshui.budgetmaster.utilities.ImageUtility;
 import com.ritaja.xchangerate.util.Currency;
 
 import java.math.BigDecimal;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 import gun0912.tedbottompicker.TedBottomPicker;
@@ -49,7 +50,8 @@ public class MainActivity extends AppCompatActivity {
     private Uri pictureUri;
     private ToggleButton toggleBudgetSet;
     private BigDecimal budgetNum;
-
+    private TextView currentCost;
+    private DecimalFormat df = new DecimalFormat("#,###.00");
     //private ScrollView scrollView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,6 +69,7 @@ public class MainActivity extends AppCompatActivity {
         toggleBudgetSet = (ToggleButton) findViewById(R.id.toggleButton);
         layoutManager = new LinearLayoutManager(this);
         itemRecyclerView.setLayoutManager(layoutManager);
+        currentCost = (TextView) findViewById(R.id.currentCostText);
         //scrollView = (ScrollView) findViewById(R.id.scrollView);
         getBudgetFromSettings();
         setSpinnerSelectionItems(getSelectedCurrency());
@@ -99,7 +102,8 @@ public class MainActivity extends AppCompatActivity {
             Log.i("Budget", "Changed budget to " + budget);
             editor.commit();
             budgetText.setFocusable(false);
-            budgetNum = new BigDecimal(budget);
+            budgetNum = new BigDecimal(df.format(new BigDecimal(budget)));
+            budgetText.setText(budgetNum.toString());
             compareTotalCostToBudget();
         } else {
             makeToast("Please enter a budget and try again.");
@@ -128,7 +132,8 @@ public class MainActivity extends AppCompatActivity {
         ArrayList<Item> items = CurrencyUtility.getExistingItems();
         BigDecimal totalCost = new BigDecimal(0);
         for (Item item : items) {
-            totalCost = totalCost.add(item.getPrice());
+            BigDecimal price = item.getPrice();
+            totalCost = totalCost.add(price);
         }
         if (budgetNum != null && totalCost.compareTo(budgetNum) > 0) {
             makeToast("The total cost exceeds your budget!");
@@ -136,6 +141,7 @@ public class MainActivity extends AppCompatActivity {
         } else {
             budgetText.setBackgroundColor(Color.WHITE);
         }
+        currentCost.setText("   " + totalCost.toString());
     }
 
     private void populateItemRecyclerView() {

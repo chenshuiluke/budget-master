@@ -6,12 +6,14 @@ import com.activeandroid.annotation.Table;
 import com.ritaja.xchangerate.util.Currency;
 
 import java.math.BigDecimal;
+import java.text.DecimalFormat;
 
 /**
  * Created by luke on 10/16/16.
  */
 @Table(name = "Items")
 public class Item extends Model {
+    DecimalFormat df = new DecimalFormat("#,###.00");
     @Column(name = "Currency")
     private Currency currency;
     @Column(name = "Price")
@@ -28,7 +30,7 @@ public class Item extends Model {
     public Item(Currency currency, BigDecimal price, String name, byte[] picture) {
         super();
         this.currency = currency;
-        this.price = price;
+        this.price = new BigDecimal(df.format(price));
         this.name = name;
         this.picture = picture;
     }
@@ -46,7 +48,7 @@ public class Item extends Model {
     }
 
     public void setPrice(BigDecimal price) {
-        this.price = price;
+        new BigDecimal(df.format(price));
     }
 
     public String getName() {

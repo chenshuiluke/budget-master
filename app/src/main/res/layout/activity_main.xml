@@ -1,109 +1,128 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
-        android:id="@+id/activity_main"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_main"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    tools:context="com.lukechenshui.budgetmaster.MainActivity">
+
+    <LinearLayout
+        android:id="@+id/currencySelectionRow"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:paddingBottom="@dimen/activity_vertical_margin"
-        android:paddingLeft="@dimen/activity_horizontal_margin"
-        android:paddingRight="@dimen/activity_horizontal_margin"
-        android:paddingTop="@dimen/activity_vertical_margin"
-        tools:context="com.lukechenshui.budgetmaster.MainActivity">
+        android:orientation="horizontal">
 
-        <LinearLayout
-            android:id="@+id/currencySelectionRow"
-            android:layout_width="match_parent"
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:text="@string/select_currency_text"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body2" />
 
-            <TextView
-                android:id="@+id/textView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/select_currency_text"
-                android:textAppearance="@style/TextAppearance.AppCompat.Body2" />
+        <Spinner
+            android:id="@+id/mainCurrencySelectionSpinner"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
 
-            <Spinner
-                android:id="@+id/mainCurrencySelectionSpinner"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-
-            <EditText
-                android:id="@+id/budgetText"
-                android:layout_width="100dp"
-                android:layout_height="wrap_content"
-                android:ems="10"
-                android:hint="@string/budget_text"
-                android:inputType="numberDecimal" />
-
-            <ToggleButton
-                android:id="@+id/toggleButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textOff="@string/set_text"
-                android:textOn="@string/unset_text" />
-        </LinearLayout>
-
+        <EditText
+            android:id="@+id/budgetText"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:hint="@string/budget_text"
+            android:inputType="numberDecimal" />
 
         <ToggleButton
-            android:id="@+id/toggleAddItem"
-            android:layout_width="match_parent"
+            android:id="@+id/toggleButton"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/currencySelectionRow"
-            android:checked="false"
-            android:textOff="@string/add_item_to_cart_text"
-            android:textOn="@string/cancel_text" />
+            android:textOff="@string/set_text"
+            android:textOn="@string/unset_text" />
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/currencySelectionRow"
+        android:layout_weight="1"
+        android:text="@string/total_cost_text" />
+
+    <TextView
+        android:id="@+id/currentCostText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/currencySelectionRow"
+        android:layout_toRightOf="@id/textView3"
+        android:layout_weight="1"
+        android:text="" />
 
 
-        <com.github.aakira.expandablelayout.ExpandableRelativeLayout
-            android:id="@+id/expandableLayout"
-            ael_expanded="false"
-            android:layout_width="match_parent"
+    <ToggleButton
+        android:id="@+id/toggleAddItem"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/textView3"
+        android:checked="false"
+        android:textOff="@string/add_item_to_cart_text"
+        android:textOn="@string/cancel_text" />
+
+
+    <com.github.aakira.expandablelayout.ExpandableRelativeLayout
+        android:id="@+id/expandableLayout"
+        ael_expanded="false"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/toggleAddItem">
+
+        <EditText
+            android:id="@+id/itemName"
+            android:layout_width="200dp"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/toggleAddItem">
+            android:hint="@string/item_name"
+            android:inputType="textAutoComplete"
+            tools:focusable="true" />
 
-            <EditText
-                android:id="@+id/itemName"
-                android:layout_width="200dp"
-                android:layout_height="wrap_content"
-                android:hint="@string/item_name"
-                android:inputType="textAutoComplete"
-                tools:focusable="true" />
+        <EditText
+            android:id="@+id/itemPrice"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@id/itemName"
+            android:hint="@string/item_price"
+            android:inputType="numberDecimal" />
 
-            <EditText
-                android:id="@+id/itemPrice"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_toRightOf="@id/itemName"
-                android:hint="@string/item_price"
-                android:inputType="numberDecimal" />
+        <Button
+            android:id="@+id/button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/itemName"
+            android:onClick="saveItem"
+            android:text="@string/add" />
 
-            <Button
-                android:id="@+id/button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/itemName"
-                android:onClick="saveItem"
-                android:text="@string/add" />
-            <ImageButton
-                android:id="@+id/itemImageButton"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:layout_alignBottom="@id/button"
-                android:layout_alignTop="@id/button"
-                android:layout_toRightOf="@id/button"
-                android:onClick="selectImages"
-                android:scaleType="fitCenter"
-                app:srcCompat="@drawable/ic_camera_enhance_black_24dp" />
+        <ImageButton
+            android:id="@+id/itemImageButton"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_alignBottom="@id/button"
+            android:layout_alignTop="@id/button"
+            android:layout_toRightOf="@id/button"
+            android:onClick="selectImages"
+            android:scaleType="fitCenter"
+            app:srcCompat="@drawable/ic_camera_enhance_black_24dp" />
 
-        </com.github.aakira.expandablelayout.ExpandableRelativeLayout>
+    </com.github.aakira.expandablelayout.ExpandableRelativeLayout>
 
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/itemRecyclerView"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_below="@+id/expandableLayout" />
-    </RelativeLayout>
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/itemRecyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/expandableLayout" />
+</RelativeLayout>

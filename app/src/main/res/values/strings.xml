@@ -10,4 +10,5 @@
     <string name="budget_text">Budget:</string>
     <string name="set_text">Set  </string>
     <string name="unset_text">Unset</string>
+    <string name="total_cost_text">Total Cost:  </string>
 </resources>
