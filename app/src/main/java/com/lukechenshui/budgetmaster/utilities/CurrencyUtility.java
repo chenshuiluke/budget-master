@@ -83,4 +83,13 @@ public abstract class CurrencyUtility {
         Currency currency = getCurrencyMap().get(currencyName);
         convertItemCurrency(item, currency);
     }
+
+    public static BigDecimal convertCurrency(Currency old, Currency newCurrency, BigDecimal oldValue) {
+        try {
+            return converter.convertCurrency(oldValue, old, newCurrency);
+        } catch (Exception exc) {
+            Log.d("CurrencyConversion", "Error converting currency", exc);
+            return null;
+        }
+    }
 }

@@ -34,13 +34,29 @@
                 android:id="@+id/mainCurrencySelectionSpinner"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
+
+            <EditText
+                android:id="@+id/budgetText"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:hint="@string/budget_text"
+                android:inputType="numberDecimal" />
+
+            <ToggleButton
+                android:id="@+id/toggleButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textOff="@string/set_text"
+                android:textOn="@string/unset_text" />
         </LinearLayout>
+
 
         <ToggleButton
             android:id="@+id/toggleAddItem"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/currencySelectionRow"
+            android:layout_below="@id/currencySelectionRow"
             android:checked="false"
             android:textOff="@string/add_item_to_cart_text"
             android:textOn="@string/cancel_text" />
@@ -77,15 +93,15 @@
                 android:onClick="saveItem"
                 android:text="@string/add" />
             <ImageButton
+                android:id="@+id/itemImageButton"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
-                android:layout_toRightOf="@id/button"
-                android:layout_alignTop="@id/button"
                 android:layout_alignBottom="@id/button"
-                app:srcCompat="@drawable/ic_camera_enhance_black_24dp"
-                android:scaleType="fitCenter"
+                android:layout_alignTop="@id/button"
+                android:layout_toRightOf="@id/button"
                 android:onClick="selectImages"
-                android:id="@+id/itemImageButton"/>
+                android:scaleType="fitCenter"
+                app:srcCompat="@drawable/ic_camera_enhance_black_24dp" />
 
         </com.github.aakira.expandablelayout.ExpandableRelativeLayout>
 

@@ -44,7 +44,10 @@ public class MainActivity extends AppCompatActivity {
     private RecyclerView itemRecyclerView;
     private LinearLayoutManager layoutManager;
     private ImageButton newItemImageButton;
+    private EditText budgetText;
     private Uri pictureUri;
+    private ToggleButton toggleBudgetSet;
+    private BigDecimal budgetNum;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -57,19 +60,80 @@ public class MainActivity extends AppCompatActivity {
         newItemPrice = (EditText) findViewById(R.id.itemPrice);
         newItemImageButton = (ImageButton) findViewById(R.id.itemImageButton);
         itemRecyclerView = (RecyclerView) findViewById(R.id.itemRecyclerView);
+        budgetText = (EditText) findViewById(R.id.budgetText);
+        toggleBudgetSet = (ToggleButton) findViewById(R.id.toggleButton);
         layoutManager = new LinearLayoutManager(this);
         itemRecyclerView.setLayoutManager(layoutManager);
+        getBudgetFromSettings();
         setSpinnerSelectionItems(getSelectedCurrency());
         setSpinnerOnItemSelected();
         setToggleButtonOnToggle();
+        setBudgetToggleOnToggle();
         expandableLayout.setClosePosition(0);
         expandableLayout.collapse();
 
         populateItemRecyclerView();
     }
 
+    private void getBudgetFromSettings() {
+        SharedPreferences settings = getSharedPreferences(getString(R.string.shared_preferences_name), 0);
+        String budget = settings.getString("budget", "");
+        if (budget.length() > 0) {
+            toggleBudgetSet.setChecked(true);
+            budgetText.setFocusable(false);
+            budgetText.setText(budget);
+            budgetNum = new BigDecimal(budget);
+        }
+    }
+
+    private void setBudgetText() {
+        String budget = budgetText.getText().toString();
+        if (budget.length() > 0) {
+            SharedPreferences settings = getSharedPreferences(getString(R.string.shared_preferences_name), 0);
+            SharedPreferences.Editor editor = settings.edit();
+            editor.putString("budget", budget);
+            Log.i("Budget", "Changed budget to " + budget);
+            editor.commit();
+            budgetText.setFocusable(false);
+            budgetNum = new BigDecimal(budget);
+            compareTotalCostToBudget();
+        } else {
+            makeToast("Please enter a budget and try again.");
+            toggleBudgetSet.setChecked(false);
+        }
+    }
+
+    private void setBudgetToggleOnToggle() {
+        toggleBudgetSet.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    setBudgetText();
+                    Log.d("Budget", "Setting budget text to unfocusable");
+                } else {
+                    budgetText.setFocusable(true);
+                    budgetText.setFocusableInTouchMode(true);
+                    budgetText.requestFocus();
+                    Log.d("Budget", "Setting budget text to focusable");
+                }
+            }
+        });
+    }
+
+    private void compareTotalCostToBudget() {
+        Log.d("Budget", "Checking to see if the total cost exceeds the budget");
+        ArrayList<Item> items = CurrencyUtility.getExistingItems();
+        BigDecimal totalCost = new BigDecimal(0);
+        for (Item item : items) {
+            totalCost = totalCost.add(item.getPrice());
+        }
+        if (budgetNum != null && totalCost.compareTo(budgetNum) > 0) {
+            makeToast("The total cost exceeds your budget!");
+        }
+    }
+
     private void populateItemRecyclerView() {
         ArrayList<Item> items = CurrencyUtility.getExistingItems();
+        compareTotalCostToBudget();
         Log.d("ShoppingCart", "Existing items:" + items.toString());
         ItemRecyclerViewAdapter adapter = new ItemRecyclerViewAdapter(items);
         itemRecyclerView.setAdapter(adapter);
@@ -149,11 +213,25 @@ public class MainActivity extends AppCompatActivity {
                         Log.i("Currency", "Changed currency to " + currencyName);
                         editor.commit();
 
+
                         Thread thread = new Thread(new Runnable() {
                             @Override
                             public void run() {
                                 final String finalCurrencyName = currencyName;
+                                Currency currency = CurrencyUtility.getCurrencyMap().get(currencyName);
                                 ArrayList<Item> items = CurrencyUtility.getExistingItems();
+                                String budget = budgetText.getText().toString();
+                                if (items != null && items.size() > 0 && budget != null) {
+                                    budgetNum = CurrencyUtility.convertCurrency(items.get(0).getCurrency(), currency, new BigDecimal(budget));
+                                    runOnUiThread(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            budgetText.setText(budgetNum.toString());
+                                        }
+                                    });
+
+                                }
+
                                 for (Item tempItem : items) {
                                     CurrencyUtility.convertItemCurrency(tempItem, finalCurrencyName);
                                     tempItem.save();
