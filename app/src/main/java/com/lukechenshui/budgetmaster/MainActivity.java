@@ -2,6 +2,7 @@ package com.lukechenshui.budgetmaster;
 
 import android.Manifest;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -48,6 +49,8 @@ public class MainActivity extends AppCompatActivity {
     private Uri pictureUri;
     private ToggleButton toggleBudgetSet;
     private BigDecimal budgetNum;
+
+    //private ScrollView scrollView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -64,6 +67,7 @@ public class MainActivity extends AppCompatActivity {
         toggleBudgetSet = (ToggleButton) findViewById(R.id.toggleButton);
         layoutManager = new LinearLayoutManager(this);
         itemRecyclerView.setLayoutManager(layoutManager);
+        //scrollView = (ScrollView) findViewById(R.id.scrollView);
         getBudgetFromSettings();
         setSpinnerSelectionItems(getSelectedCurrency());
         setSpinnerOnItemSelected();
@@ -128,6 +132,9 @@ public class MainActivity extends AppCompatActivity {
         }
         if (budgetNum != null && totalCost.compareTo(budgetNum) > 0) {
             makeToast("The total cost exceeds your budget!");
+            budgetText.setBackgroundColor(Color.parseColor("#e3655b"));
+        } else {
+            budgetText.setBackgroundColor(Color.WHITE);
         }
     }
 
@@ -137,6 +144,7 @@ public class MainActivity extends AppCompatActivity {
         Log.d("ShoppingCart", "Existing items:" + items.toString());
         ItemRecyclerViewAdapter adapter = new ItemRecyclerViewAdapter(items);
         itemRecyclerView.setAdapter(adapter);
+        //scrollView.fullScroll(ScrollView.FOCUS_UP);
     }
 
     private void makeToast(String message) {
@@ -193,7 +201,9 @@ public class MainActivity extends AppCompatActivity {
                     newItemPrice.setFocusable(false);
                     newItemPrice.setFocusableInTouchMode(false);
                     newItemName.setFocusableInTouchMode(false);
+                    // scrollView.fullScroll(ScrollView.FOCUS_UP);
                 }
+
             }
         });
     }
