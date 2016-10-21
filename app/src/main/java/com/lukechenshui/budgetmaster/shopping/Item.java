@@ -48,7 +48,7 @@ public class Item extends Model {
     }
 
     public void setPrice(BigDecimal price) {
-        new BigDecimal(df.format(price));
+        this.price = new BigDecimal(df.format(price));
     }
 
     public String getName() {

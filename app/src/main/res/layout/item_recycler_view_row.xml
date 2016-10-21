@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/itemCard"
     android:layout_width="match_parent"
     android:layout_height="50dp"
     android:layout_marginBottom="10dp">
@@ -9,12 +10,26 @@
         android:layout_height="match_parent"
         android:orientation="horizontal">
 
+        <EditText
+            android:id="@+id/editName"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:visibility="gone" />
+
+        <EditText
+            android:id="@+id/editPrice"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:inputType="numberDecimal"
+            android:visibility="gone" />
         <TextView
             android:id="@+id/itemName"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
-            android:layout_column="0"
-            android:layout_row="0"
             android:layout_weight="1"
             android:gravity="center"
             android:text="TextView" />
@@ -39,6 +54,7 @@
             android:layout_weight="1">
 
             <android.support.v7.widget.AppCompatImageButton
+                android:id="@+id/editCard"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -50,6 +66,22 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:src="@drawable/ic_delete_black_24dp" />
+
+            <android.support.v7.widget.AppCompatImageButton
+                android:id="@+id/acceptEdit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:src="@drawable/ic_done_black_24dp"
+                android:visibility="gone" />
+
+            <android.support.v7.widget.AppCompatImageButton
+                android:id="@+id/cancelEdit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:src="@drawable/ic_highlight_off_black_24dp"
+                android:visibility="gone" />
         </LinearLayout>
     </LinearLayout>
 

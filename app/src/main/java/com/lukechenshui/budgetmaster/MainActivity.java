@@ -15,6 +15,7 @@ import android.widget.ArrayAdapter;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -52,6 +53,7 @@ public class MainActivity extends AppCompatActivity {
     private BigDecimal budgetNum;
     private TextView currentCost;
     private DecimalFormat df = new DecimalFormat("#,###.00");
+    private ProgressBar progressBar;
     //private ScrollView scrollView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,6 +71,7 @@ public class MainActivity extends AppCompatActivity {
         toggleBudgetSet = (ToggleButton) findViewById(R.id.toggleButton);
         layoutManager = new LinearLayoutManager(this);
         itemRecyclerView.setLayoutManager(layoutManager);
+        progressBar = (ProgressBar) findViewById(R.id.costToBudgetProgressBar);
         currentCost = (TextView) findViewById(R.id.currentCostText);
         //scrollView = (ScrollView) findViewById(R.id.scrollView);
         getBudgetFromSettings();
@@ -141,6 +144,8 @@ public class MainActivity extends AppCompatActivity {
         } else {
             budgetText.setBackgroundColor(Color.WHITE);
         }
+        progressBar.setMax(budgetNum.intValue());
+        progressBar.setProgress(totalCost.intValue());
         currentCost.setText("   " + totalCost.toString());
     }
 
@@ -151,11 +156,23 @@ public class MainActivity extends AppCompatActivity {
         final ItemRecyclerViewAdapter adapter = new ItemRecyclerViewAdapter(items);
         itemRecyclerView.setAdapter(adapter);
         adapter.registerAdapterDataObserver(new RecyclerView.AdapterDataObserver() {
+
             @Override
             public void onItemRangeRemoved(int positionStart, int itemCount) {
                 super.onItemRangeRemoved(positionStart, itemCount);
                 populateItemRecyclerView();
+                Log.d("CardView", "Registered that an item was deleted.");
             }
+
+            @Override
+            public void onItemRangeChanged(int positionStart, int itemCount, Object payload) {
+                super.onItemRangeChanged(positionStart, itemCount, payload);
+
+                populateItemRecyclerView();
+                Log.d("CardView", "Registered that an item changed.");
+            }
+
+
         });
         //scrollView.fullScroll(ScrollView.FOCUS_UP);
     }
@@ -193,7 +210,7 @@ public class MainActivity extends AppCompatActivity {
         toggleButton.setChecked(false);
         Uri uri = Uri.parse("android.resource://" + getApplicationContext().getPackageName() + "/drawable/ic_camera_enhance_black_24dp");
         newItemImageButton.setImageURI(uri);
-        pictureUri = pictureUri;
+        pictureUri = null;
     }
 
     private void setToggleButtonOnToggle() {

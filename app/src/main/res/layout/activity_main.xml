@@ -69,6 +69,15 @@
         android:layout_weight="1"
         android:text="" />
 
+    <ProgressBar
+        android:id="@+id/costToBudgetProgressBar"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@id/currentCostText"
+        android:layout_toRightOf="@id/currentCostText"
+        android:indeterminate="false"
+        android:paddingLeft="20dp" />
 
     <ToggleButton
         android:id="@+id/toggleAddItem"
@@ -129,4 +138,5 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@+id/expandableLayout" />
+
 </RelativeLayout>
