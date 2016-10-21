@@ -23,18 +23,21 @@
             android:id="@+id/textView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:text="@string/select_currency_text"
             android:textAppearance="@style/TextAppearance.AppCompat.Body2" />
 
         <Spinner
             android:id="@+id/mainCurrencySelectionSpinner"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:layout_weight="1" />
 
         <EditText
             android:id="@+id/budgetText"
-            android:layout_width="100dp"
+            android:layout_width="50dp"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:ems="10"
             android:hint="@string/budget_text"
             android:inputType="numberDecimal" />
@@ -43,6 +46,7 @@
             android:id="@+id/toggleButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:textOff="@string/set_text"
             android:textOn="@string/unset_text" />
 

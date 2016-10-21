@@ -148,8 +148,15 @@ public class MainActivity extends AppCompatActivity {
         ArrayList<Item> items = CurrencyUtility.getExistingItems();
         compareTotalCostToBudget();
         Log.d("ShoppingCart", "Existing items:" + items.toString());
-        ItemRecyclerViewAdapter adapter = new ItemRecyclerViewAdapter(items);
+        final ItemRecyclerViewAdapter adapter = new ItemRecyclerViewAdapter(items);
         itemRecyclerView.setAdapter(adapter);
+        adapter.registerAdapterDataObserver(new RecyclerView.AdapterDataObserver() {
+            @Override
+            public void onItemRangeRemoved(int positionStart, int itemCount) {
+                super.onItemRangeRemoved(positionStart, itemCount);
+                populateItemRecyclerView();
+            }
+        });
         //scrollView.fullScroll(ScrollView.FOCUS_UP);
     }
 

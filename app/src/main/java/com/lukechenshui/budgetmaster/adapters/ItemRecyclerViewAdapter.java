@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -50,17 +51,34 @@ public class ItemRecyclerViewAdapter extends RecyclerView.Adapter<ItemRecyclerVi
         super.onBindViewHolder(holder, position, payloads);
     }
 
-    public static class ItemHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    public Item getItem(int pos) {
+        return items.get(pos);
+    }
+
+    public void delete(int position) {
+        Item item = items.get(position);
+        item.delete();
+        items.remove(position);
+        notifyItemRemoved(position);
+    }
+
+    public class ItemHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         private TextView itemName;
         private TextView itemPrice;
-        private TextView itemCurrency;
         private ImageView itemPicture;
+        private ImageButton deleteCard;
         public ItemHolder(View view) {
             super(view);
             itemName = (TextView) view.findViewById(R.id.itemName);
             itemPrice = (TextView) view.findViewById(R.id.itemPrice);
-            itemCurrency = (TextView) view.findViewById(R.id.itemCurrency);
             itemPicture = (ImageView) view.findViewById(R.id.itemImage);
+            deleteCard = (ImageButton) view.findViewById(R.id.deleteCard);
+            deleteCard.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    delete(getAdapterPosition());
+                }
+            });
         }
 
         @Override
@@ -72,7 +90,6 @@ public class ItemRecyclerViewAdapter extends RecyclerView.Adapter<ItemRecyclerVi
             Log.i("BudgetMaster", item.toString());
             itemName.setText(item.getName());
             itemPrice.setText(item.getPrice().toString());
-            itemCurrency.setText(item.getCurrency().name());
             Log.d("Image", "item image: " + item.getPicture());
             if(item.getPicture() != null){
                 Bitmap bitmap = BitmapFactory.decodeByteArray(item.getPicture(), 0, item.getPicture().length);
