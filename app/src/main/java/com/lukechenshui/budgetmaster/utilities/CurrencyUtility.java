@@ -61,10 +61,16 @@ public abstract class CurrencyUtility {
     }
 
     public static ArrayList<Item> getExistingItems() {
-        List<Item> items = new Select().from(Item.class).execute();
-        ArrayList<Item> itemList = new ArrayList<>();
-        itemList.addAll(items);
-        return itemList;
+        try {
+            List<Item> items = new Select().from(Item.class).execute();
+            ArrayList<Item> itemList = new ArrayList<>();
+            itemList.addAll(items);
+            return itemList;
+        } catch (NullPointerException exc) {
+            Log.d("Item", "Error occurred while getting list of items", exc);
+            return new ArrayList<Item>();
+        }
+
     }
 
     public static void convertItemCurrency(Item item, Currency currency) {

@@ -44,11 +44,14 @@
 
         <ToggleButton
             android:id="@+id/toggleButton"
-            android:layout_width="wrap_content"
+            android:layout_width="10dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:textOff="@string/set_text"
-            android:textOn="@string/unset_text" />
+            android:background="@null"
+            android:button="@drawable/check"
+            android:gravity="center_vertical"
+            android:textOff=""
+            android:textOn="" />
 
     </LinearLayout>
 
@@ -127,6 +130,7 @@
             android:layout_alignBottom="@id/button"
             android:layout_alignTop="@id/button"
             android:layout_toRightOf="@id/button"
+            android:background="@null"
             android:onClick="selectImages"
             android:scaleType="fitCenter"
             app:srcCompat="@drawable/ic_camera_enhance_black_24dp" />

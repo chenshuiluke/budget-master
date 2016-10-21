@@ -55,31 +55,35 @@
 
             <android.support.v7.widget.AppCompatImageButton
                 android:id="@+id/editCard"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
                 android:layout_weight="1"
+                android:background="@null"
                 android:src="@drawable/ic_mode_edit_black_24dp" />
 
             <android.support.v7.widget.AppCompatImageButton
                 android:id="@+id/deleteCard"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
                 android:layout_weight="1"
+                android:background="@null"
                 android:src="@drawable/ic_delete_black_24dp" />
 
             <android.support.v7.widget.AppCompatImageButton
                 android:id="@+id/acceptEdit"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
                 android:layout_weight="1"
+                android:background="@null"
                 android:src="@drawable/ic_done_black_24dp"
                 android:visibility="gone" />
 
             <android.support.v7.widget.AppCompatImageButton
                 android:id="@+id/cancelEdit"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
                 android:layout_weight="1"
+                android:background="@null"
                 android:src="@drawable/ic_highlight_off_black_24dp"
                 android:visibility="gone" />
         </LinearLayout>

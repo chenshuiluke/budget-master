@@ -141,11 +141,12 @@ public class MainActivity extends AppCompatActivity {
         if (budgetNum != null && totalCost.compareTo(budgetNum) > 0) {
             makeToast("The total cost exceeds your budget!");
             budgetText.setBackgroundColor(Color.parseColor("#e3655b"));
+            progressBar.setMax(budgetNum.intValue());
+            progressBar.setProgress(totalCost.intValue());
         } else {
             budgetText.setBackgroundColor(Color.WHITE);
         }
-        progressBar.setMax(budgetNum.intValue());
-        progressBar.setProgress(totalCost.intValue());
+
         currentCost.setText("   " + totalCost.toString());
     }
 
