@@ -119,7 +119,7 @@ public class ItemRecyclerViewAdapter extends RecyclerView.Adapter<ItemRecyclerVi
                     String newName = editName.getText().toString();
                     String newPrice = editPrice.getText().toString();
                     Log.d("Item", "new name:" + newName + " new price:" + newPrice);
-                    newPrice.replaceAll(",", "");
+                    newPrice = newPrice.replaceAll(",", "");
                     item.setPrice(new BigDecimal(newPrice));
                     item.setName(newName);
                     Log.d("Item", "Item after editing:" + item);

@@ -92,12 +92,14 @@ public class MainActivity extends AppCompatActivity {
             toggleBudgetSet.setChecked(true);
             budgetText.setFocusable(false);
             budgetText.setText(budget);
+            budget = budget.replaceAll(",", "");
             budgetNum = new BigDecimal(budget);
         }
     }
 
     private void setBudgetText() {
         String budget = budgetText.getText().toString();
+        budget = budget.replaceAll(",", "");
         if (budget.length() > 0) {
             SharedPreferences settings = getSharedPreferences(getString(R.string.shared_preferences_name), 0);
             SharedPreferences.Editor editor = settings.edit();
@@ -105,8 +107,8 @@ public class MainActivity extends AppCompatActivity {
             Log.i("Budget", "Changed budget to " + budget);
             editor.commit();
             budgetText.setFocusable(false);
-            budgetNum = new BigDecimal(df.format(new BigDecimal(budget)));
-            budgetText.setText(budgetNum.toString());
+            budgetNum = new BigDecimal(budget);
+            budgetText.setText(df.format(budgetNum));
             compareTotalCostToBudget();
         } else {
             makeToast("Please enter a budget and try again.");
@@ -262,6 +264,7 @@ public class MainActivity extends AppCompatActivity {
                                 Currency currency = CurrencyUtility.getCurrencyMap().get(currencyName);
                                 ArrayList<Item> items = CurrencyUtility.getExistingItems();
                                 String budget = budgetText.getText().toString();
+                                budget = budget.replaceAll(",", "");
                                 if (items != null && items.size() > 0 && budget != null) {
                                     budgetNum = CurrencyUtility.convertCurrency(items.get(0).getCurrency(), currency, new BigDecimal(budget));
                                     runOnUiThread(new Runnable() {

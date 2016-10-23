@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "342246907961",
+    "firebase_url": "https://budget-master.firebaseio.com",
+    "project_id": "budget-master",
+    "storage_bucket": "budget-master.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:342246907961:android:96ee1b98b5e5f217",
+        "android_client_info": {
+          "package_name": "com.lukechenshui.budgetmaster"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "342246907961-7mj9msbsaag3m3q91v4ftdderd7ossvb.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBDKuP0MVh7QFfdiHrrDskK8qdhVt08rk0"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
