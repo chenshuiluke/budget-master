@@ -4,6 +4,7 @@ import android.Manifest;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -21,6 +22,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
 
+import com.activeandroid.ActiveAndroid;
 import com.github.aakira.expandablelayout.ExpandableRelativeLayout;
 import com.gun0912.tedpermission.PermissionListener;
 import com.gun0912.tedpermission.TedPermission;
@@ -54,11 +56,13 @@ public class MainActivity extends AppCompatActivity {
     private TextView currentCost;
     private DecimalFormat df = new DecimalFormat("#,###.00");
     private ProgressBar progressBar;
+
     //private ScrollView scrollView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        ActiveAndroid.initialize(this);
         Log.i("Currency", "Available currencies: " + CurrencyUtility.getCurrencies().toString());
         currencySpinner = (Spinner) findViewById(R.id.mainCurrencySelectionSpinner);
         expandableLayout = (ExpandableRelativeLayout) findViewById(R.id.expandableLayout);
@@ -82,7 +86,7 @@ public class MainActivity extends AppCompatActivity {
         expandableLayout.setClosePosition(0);
         expandableLayout.collapse();
 
-        populateItemRecyclerView();
+        loadRecyclerViewAsynchronously();
     }
 
     private void getBudgetFromSettings() {
@@ -143,41 +147,47 @@ public class MainActivity extends AppCompatActivity {
         if (budgetNum != null && totalCost.compareTo(budgetNum) > 0) {
             makeToast("The total cost exceeds your budget!");
             budgetText.setBackgroundColor(Color.parseColor("#e3655b"));
-            progressBar.setMax(budgetNum.intValue());
-            progressBar.setProgress(totalCost.intValue());
         } else {
             budgetText.setBackgroundColor(Color.WHITE);
         }
-
+        if (budgetNum != null) {
+            progressBar.setMax(budgetNum.intValue());
+            progressBar.setProgress(totalCost.intValue());
+        }
         currentCost.setText("   " + totalCost.toString());
     }
 
     private void populateItemRecyclerView() {
-        ArrayList<Item> items = CurrencyUtility.getExistingItems();
-        compareTotalCostToBudget();
-        Log.d("ShoppingCart", "Existing items:" + items.toString());
-        final ItemRecyclerViewAdapter adapter = new ItemRecyclerViewAdapter(items);
-        itemRecyclerView.setAdapter(adapter);
-        adapter.registerAdapterDataObserver(new RecyclerView.AdapterDataObserver() {
+        final ArrayList<Item> items = CurrencyUtility.getExistingItems();
 
+        runOnUiThread(new Runnable() {
             @Override
-            public void onItemRangeRemoved(int positionStart, int itemCount) {
-                super.onItemRangeRemoved(positionStart, itemCount);
-                populateItemRecyclerView();
-                Log.d("CardView", "Registered that an item was deleted.");
+            public void run() {
+                compareTotalCostToBudget();
+                Log.d("ShoppingCart", "Existing items:" + items.toString());
+                final ItemRecyclerViewAdapter adapter = new ItemRecyclerViewAdapter(items);
+                itemRecyclerView.setAdapter(adapter);
+                adapter.registerAdapterDataObserver(new RecyclerView.AdapterDataObserver() {
+
+                    @Override
+                    public void onItemRangeRemoved(int positionStart, int itemCount) {
+                        super.onItemRangeRemoved(positionStart, itemCount);
+                        populateItemRecyclerView();
+                        Log.d("CardView", "Registered that an item was deleted.");
+                    }
+
+                    @Override
+                    public void onItemRangeChanged(int positionStart, int itemCount, Object payload) {
+                        super.onItemRangeChanged(positionStart, itemCount, payload);
+
+                        populateItemRecyclerView();
+                        Log.d("CardView", "Registered that an item changed.");
+                    }
+
+
+                });
             }
-
-            @Override
-            public void onItemRangeChanged(int positionStart, int itemCount, Object payload) {
-                super.onItemRangeChanged(positionStart, itemCount, payload);
-
-                populateItemRecyclerView();
-                Log.d("CardView", "Registered that an item changed.");
-            }
-
-
         });
-        //scrollView.fullScroll(ScrollView.FOCUS_UP);
     }
 
     private void makeToast(String message) {
@@ -200,7 +210,7 @@ public class MainActivity extends AppCompatActivity {
             item.save();
             clearNewItemInformation();
             expandableLayout.collapse();
-            populateItemRecyclerView();
+            loadRecyclerViewAsynchronously();
             toggleButton.setChecked(false);
         }
 
@@ -256,7 +266,6 @@ public class MainActivity extends AppCompatActivity {
                         Log.i("Currency", "Changed currency to " + currencyName);
                         editor.commit();
 
-
                         Thread thread = new Thread(new Runnable() {
                             @Override
                             public void run() {
@@ -265,7 +274,9 @@ public class MainActivity extends AppCompatActivity {
                                 ArrayList<Item> items = CurrencyUtility.getExistingItems();
                                 String budget = budgetText.getText().toString();
                                 budget = budget.replaceAll(",", "");
-                                if (items != null && items.size() > 0 && budget != null) {
+                                Log.d("Budget", "Budget: " + budget);
+                                if (items != null && items.size() > 0 && budget != null && budget.length() > 0) {
+
                                     budgetNum = CurrencyUtility.convertCurrency(items.get(0).getCurrency(), currency, new BigDecimal(budget));
                                     runOnUiThread(new Runnable() {
                                         @Override
@@ -280,13 +291,7 @@ public class MainActivity extends AppCompatActivity {
                                     CurrencyUtility.convertItemCurrency(tempItem, finalCurrencyName);
                                     tempItem.save();
                                 }
-                                runOnUiThread(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        populateItemRecyclerView();
-                                    }
-                                });
-
+                                loadRecyclerViewAsynchronously();
                             }
                         });
                         thread.start();
@@ -325,7 +330,7 @@ public class MainActivity extends AppCompatActivity {
         currencySpinner.setSelection(pos);
     }
 
-    public void selectImages(View view){
+    public void selectImages(View view) {
 
         PermissionListener permissionlistener = new PermissionListener() {
             @Override
@@ -348,8 +353,6 @@ public class MainActivity extends AppCompatActivity {
             public void onPermissionDenied(ArrayList<String> deniedPermissions) {
                 Toast.makeText(MainActivity.this, "Permission Denied\n" + deniedPermissions.toString(), Toast.LENGTH_SHORT).show();
             }
-
-
         };
 
         new TedPermission(this)
@@ -358,5 +361,18 @@ public class MainActivity extends AppCompatActivity {
                 .setPermissions(Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.CAMERA)
                 .check();
 
+    }
+
+    private void loadRecyclerViewAsynchronously() {
+        RecyclerViewAsyncTask task = new RecyclerViewAsyncTask();
+        task.execute();
+    }
+
+    private class RecyclerViewAsyncTask extends AsyncTask {
+        @Override
+        protected Object doInBackground(Object[] params) {
+            populateItemRecyclerView();
+            return null;
+        }
     }
 }

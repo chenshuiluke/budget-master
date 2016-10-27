@@ -30,7 +30,7 @@ public class Item extends Model {
     public Item(Currency currency, BigDecimal price, String name, byte[] picture) {
         super();
         this.currency = currency;
-        this.price = new BigDecimal(df.format(price));
+        this.price = price;
         this.name = name;
         this.picture = picture;
     }
@@ -47,8 +47,16 @@ public class Item extends Model {
         return price;
     }
 
+    public String getFormattedPrice() {
+        return df.format(price);
+    }
+
+    public String getFormattedPrice() {
+        return df.format(price);
+    }
+
     public void setPrice(BigDecimal price) {
-        this.price = new BigDecimal(df.format(price));
+        this.price = price;
     }
 
     public String getName() {

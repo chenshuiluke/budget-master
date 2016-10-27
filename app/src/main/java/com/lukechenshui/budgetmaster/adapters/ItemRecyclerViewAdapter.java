@@ -158,7 +158,7 @@ public class ItemRecyclerViewAdapter extends RecyclerView.Adapter<ItemRecyclerVi
         public void bindItem(Item item) {
             Log.i("BudgetMaster", item.toString());
             itemName.setText(item.getName());
-            itemPrice.setText(item.getPrice().toString());
+            itemPrice.setText(item.getFormattedPrice());
             Log.d("Image", "item image: " + item.getPicture());
             if(item.getPicture() != null){
                 Bitmap bitmap = BitmapFactory.decodeByteArray(item.getPicture(), 0, item.getPicture().length);
