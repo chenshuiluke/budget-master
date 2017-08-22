@@ -51,9 +51,6 @@ public class Item extends Model {
         return df.format(price);
     }
 
-    public String getFormattedPrice() {
-        return df.format(price);
-    }
 
     public void setPrice(BigDecimal price) {
         this.price = price;

@@ -262,6 +262,9 @@ public class MainActivity extends AppCompatActivity {
                         SharedPreferences settings = getSharedPreferences(getString(R.string.shared_preferences_name), 0);
                         SharedPreferences.Editor editor = settings.edit();
                         editor.putInt("selectedCurrencyPos", position);
+
+
+;
                         editor.putString("selectedCurrencyName", currencyName);
                         Log.i("Currency", "Changed currency to " + currencyName);
                         editor.commit();
@@ -282,6 +285,15 @@ public class MainActivity extends AppCompatActivity {
                                         @Override
                                         public void run() {
                                             budgetText.setText(budgetNum.toString());
+                                            SharedPreferences settings = getSharedPreferences(getString(R.string.shared_preferences_name), 0);
+                                            SharedPreferences.Editor editor = settings.edit();
+                                            String budget = budgetText.getText().toString();
+                                            budget = budget.replaceAll(",", "");
+                                            if(budget.length() > 0){
+                                                editor.putString("budget", budget);
+                                                Log.i("Budget", "Changed budget to " + budget);
+                                            }
+                                            editor.commit();
                                         }
                                     });
 
